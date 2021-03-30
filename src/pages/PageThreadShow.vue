@@ -37,33 +37,33 @@
 </template>
 
 <script>
-    import sourceData from "@/data.json";
-    export default {
-        props: {
-            id: {
-                required: true,
-                type: String,
-            },
+import sourceData from "@/data.json";
+export default {
+    props: {
+        id: {
+            required: true,
+            type: String,
         },
-        data() {
-            return {
-                threads: sourceData.threads,
-                posts: sourceData.posts,
-                users: sourceData.users,
-            };
+    },
+    data() {
+        return {
+            threads: sourceData.threads,
+            posts: sourceData.posts,
+            users: sourceData.users,
+        };
+    },
+    computed: {
+        thread() {
+            return this.threads.find((thread) => thread.id === this.id); // also available under this.$route.params.id
         },
-        computed: {
-            thread() {
-                return this.threads.find((thread) => thread.id === this.id); // also available under this.$route.params.id
-            },
+    },
+    methods: {
+        postById(postId) {
+            return this.posts.find((p) => p.id === postId);
         },
-        methods: {
-            postById(postId) {
-                return this.posts.find((p) => p.id === postId);
-            },
-            userById(userId) {
-                return this.users.find((p) => p.id === userId);
-            },
+        userById(userId) {
+            return this.users.find((p) => p.id === userId);
         },
-    };
+    },
+};
 </script>
