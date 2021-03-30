@@ -1,6 +1,9 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <nav>
+    <span>log in</span>
+    <span>sign up</span>
+  </nav>
+  <h1>LolIOs</h1>
   <div class="container">
     <router-view/>
   </div>
