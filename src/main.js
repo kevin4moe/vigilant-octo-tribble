@@ -10,6 +10,7 @@ const routes = [
         path: "/",
         name: "Home",
         component: PageHome,
+        props: (route) => ({ query: route.query.q }),
     },
     {
         path: "/thread/:id",

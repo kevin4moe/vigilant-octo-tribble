@@ -18,21 +18,10 @@
             "moderated": false
           },
           "publishedAt": 1594035908,
-          "text": "I'm curious to know what kind of pets the forum users have. I thought this could be a nice way to get to know each other a little better, so I'll start!\n\nMy dog is a five month old Italian mastiff (Cane Corso). Since I got him from Barcelona I thought a Spanish name would be suitable, and I named him Don Jefe, or Jefe for short (which means \"boss man\").\n\nJefe is a cute, little beast who eats 1.5 kg raw meat every day. He love to fart, snore and play.\n\nHere's Jefe with his Instagram hat and sqeaky ball 🎉🎉🎉\n![Don Jefe](http://i.imgur.com/XCWzR6l.jpg)\n",
-          "threadId": "-KsjWehQ--apjDBwSBCY",
-          "userId": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
-          "id": "-KsjWehQ--apjDBwSBCZ"
-        },
-        {
-          "edited": {
-            "at": 1594037546,
-            "by": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
-            "moderated": false
-          },
-          "publishedAt": 1594035908,
           "likes": 10,
           "follows": 5,
           "charId": "sana",
+          "charNames": ["sana", "sanaldo", "ramires"],
           "url": "https://cdn.donmai.us/preview/2b/79/2b79488b972bf5e45c38a4ea66d60ffa.jpg",
           "threadId": "-KsjWehQ--apjDBwSBCY",
           "userId": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
@@ -48,6 +37,7 @@
           "likes": 10,
           "follows": 5,
           "charId": "sana",
+          "charNames": ["sana", "sanaldo"],
           "url": "https://cdn.donmai.us/preview/2b/79/2b79488b972bf5e45c38a4ea66d60ffa.jpg",
           "threadId": "-KsjWehQ--apjDBwSBCY",
           "userId": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
@@ -63,10 +53,43 @@
           "likes": 10,
           "follows": 5,
           "charId": "sana",
+          "charNames": ["sana", "sanaldo"],
           "url": "https://cdn.donmai.us/preview/2b/79/2b79488b972bf5e45c38a4ea66d60ffa.jpg",
           "threadId": "-KsjWehQ--apjDBwSBCY",
           "userId": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
           "id": 3
+        },
+        {
+          "edited": {
+            "at": 1594037546,
+            "by": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
+            "moderated": false
+          },
+          "publishedAt": 1594035908,
+          "likes": 10,
+          "follows": 5,
+          "charId": "sanaldo",
+          "charNames": ["sanaldo", "ramires"],
+          "url": "https://cdn.donmai.us/preview/2b/79/2b79488b972bf5e45c38a4ea66d60ffa.jpg",
+          "threadId": "-KsjWehQ--apjDBwSBCY",
+          "userId": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
+          "id": 4
+        },
+        {
+          "edited": {
+            "at": 1594037546,
+            "by": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
+            "moderated": false
+          },
+          "publishedAt": 1594035908,
+          "likes": 10,
+          "follows": 5,
+          "charId": "sanaldo",
+          "charNames": ["sanaldo", "ramires"],
+          "url": "https://cdn.donmai.us/preview/2b/79/2b79488b972bf5e45c38a4ea66d60ffa.jpg",
+          "threadId": "-KsjWehQ--apjDBwSBCY",
+          "userId": "ALXhxjwgY9PinwNGHpfai6OWyDu2",
+          "id": 5
         }
     ],
     "stats": {
@@ -77,7 +100,9 @@
       "favoritePosts": [
           1,
           2,
-          3
+          3,
+          4,
+          5
       ]
     },
     "threads": [
