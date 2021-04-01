@@ -21,7 +21,7 @@
             <input type="submit" value="Update" />
         </div>
     </form>
-    <div>
+    <div class="bg-red-600">
         Character: {{ formData.name }}
         <br />
         Tags: {{ formData.tags }}
@@ -86,6 +86,7 @@ export default {
         this.jsonData.favoritePosts = this.jsonData.favoritePosts.map((f) =>
             this.postById(f)
         );
+        // y.filter(item => item.charNames.toString().search("r") > -1)
     },
 };
 </script>

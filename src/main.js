@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import "./index.css";
 
 import PageHome from "@/pages/PageHome";
 import ThreadShow from "@/pages/PageThreadShow";
