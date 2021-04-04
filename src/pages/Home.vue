@@ -2,59 +2,7 @@
     <h3 class="my-8 text-center text-2xl">
         Search, Like and Follow your favorites loles.
     </h3>
-    <form
-        class="flex flex-col sm:flex-row mx-auto mb-1"
-        id="app-form"
-        @submit="checkForm"
-        action="/"
-        method="get"
-    >
-        <div v-if="formData.errors.length">
-            <p v-for="(error, index) in formData.errors" :key="index">
-                <b>{{ error }}</b>
-            </p>
-        </div>
-        <input
-            class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
-            id="name"
-            type="search"
-            name="name"
-            placeholder="Character Name"
-            v-model="formData.name"
-            @focus="formData.inputs = true"
-            @blur="formData.inputs = false"
-        />
-        <div class="list-display" v-show="formData.inputs">a</div>
-
-        <input
-            class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
-            id="tags"
-            type="search"
-            name="tags"
-            placeholder="Tags"
-            v-model="formData.tags"
-            @focus="formData.inputs = true"
-            @blur="formData.inputs = false"
-        />
-        <div class="m-auto" id="form-buttons">
-            <input
-                class="mx-1 p-2 bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
-                type="button"
-                value="Refresh"
-                @click="resetFormValues"
-            />
-            <input
-                class="mx-1 p-2 bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
-                type="submit"
-                value="Update"
-            />
-        </div>
-    </form>
-    <div v-show="formData.name || formData.tags">
-        {{ formData.name }}
-        <br />
-        {{ formData.tags }}
-    </div>
+    <form-vue />
     <!-- Favorite Posts -->
     <h2
         class="my-8 border-b-2 border-pink-100 text-pink-500 text-center text-3xl"
@@ -69,9 +17,13 @@
 </template>
 
 <script>
+import formVue from "@/components/Form.vue";
 import sourceData from "@/dataL.json";
 export default {
     name: "PageHome",
+    components: {
+        formVue,
+    },
     data() {
         return {
             jsonData: {
