@@ -17,18 +17,24 @@
         <input
             class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
             id="name"
-            v-model="formData.name"
             type="search"
             name="name"
             placeholder="Character Name"
+            v-model="formData.name"
+            @focus="formData.inputs = true"
+            @blur="formData.inputs = false"
         />
+        <div class="list-display" v-show="formData.inputs">a</div>
+
         <input
             class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
             id="tags"
-            v-model="formData.tags"
             type="search"
             name="tags"
             placeholder="Tags"
+            v-model="formData.tags"
+            @focus="formData.inputs = true"
+            @blur="formData.inputs = false"
         />
         <div class="m-auto" id="form-buttons">
             <input
@@ -78,6 +84,7 @@ export default {
                 errors: [],
                 name: null,
                 tags: null,
+                inputs: false,
             },
         };
     },
