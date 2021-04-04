@@ -1,34 +1,64 @@
 <template>
-    <span>Search, Like and Follow your favorites lolis.</span>
-    <hr />
-    <form id="app-form" @submit="checkForm" action="/" method="get">
+    <h3 class="my-8 text-center text-2xl">
+        Search, Like and Follow your favorites loles.
+    </h3>
+    <form
+        class="flex flex-col sm:flex-row mx-auto mb-1"
+        id="app-form"
+        @submit="checkForm"
+        action="/"
+        method="get"
+    >
         <div v-if="formData.errors.length">
-            <ul>
-                <li v-for="(error, index) in formData.errors" :key="index">
-                    <b>{{ error }}</b>
-                </li>
-            </ul>
+            <p v-for="(error, index) in formData.errors" :key="index">
+                <b>{{ error }}</b>
+            </p>
         </div>
-        <div>
-            <label for="name">Name</label>
-            <input id="name" v-model="formData.name" type="text" name="name" />
-        </div>
-        <div>
-            <label for="name">Tags</label>
-            <input id="tags" v-model="formData.tags" type="text" name="tags" />
-        </div>
-        <div>
-            <input type="submit" value="Update" />
+        <input
+            class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
+            id="name"
+            v-model="formData.name"
+            type="search"
+            name="name"
+            placeholder="Character Name"
+        />
+        <input
+            class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
+            id="tags"
+            v-model="formData.tags"
+            type="search"
+            name="tags"
+            placeholder="Tags"
+        />
+        <div class="m-auto" id="form-buttons">
+            <input
+                class="mx-1 p-2 bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
+                type="button"
+                value="Refresh"
+                @click="resetFormValues"
+            />
+            <input
+                class="mx-1 p-2 bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
+                type="submit"
+                value="Update"
+            />
         </div>
     </form>
-    <div class="bg-red-600">
-        Character: {{ formData.name }}
+    <div v-show="formData.name || formData.tags">
+        {{ formData.name }}
         <br />
-        Tags: {{ formData.tags }}
+        {{ formData.tags }}
     </div>
     <!-- Favorite Posts -->
-    <div v-for="post in jsonData.favoritePosts" :key="post.id">
-        <img :src="post.url" alt="" srcset="" />
+    <h2
+        class="my-8 border-b-2 border-pink-100 text-pink-500 text-center text-3xl"
+    >
+        Favorite Posts
+    </h2>
+    <div class="flex flex-row justify-around w-full" id="favPosts">
+        <div class="" v-for="post in jsonData.favoritePosts" :key="post.id">
+            <img :src="post.url" alt="" srcset="" />
+        </div>
     </div>
 </template>
 
@@ -75,6 +105,10 @@ export default {
             }
 
             e.preventDefault();
+        },
+        resetFormValues() {
+            this.formData.name = null;
+            this.formData.tags = null;
         },
     },
     mounted() {

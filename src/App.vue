@@ -1,11 +1,17 @@
 <template>
-    <nav>
-        <span>log in</span>
-        <span>sign up</span>
-    </nav>
-    <h1>LolIOs</h1>
-    <div class="container">
-        <router-view />
+    <div class="bg-white">
+        <nav
+            class="sticky top-0 flex flex-row-reverse justify-between px-8 w-full bg-white border-b-2 border-pink-100 text-pink-500"
+        >
+            <div id="login-buttons">
+                <button class="p-4">Log in</button>
+                <button class="p-4">Sign up</button>
+            </div>
+            <h1 class="my-auto text-4xl">LolIOs</h1>
+        </nav>
+        <div class="container flex flex-col mx-auto">
+            <router-view />
+        </div>
     </div>
 </template>
 
@@ -15,13 +21,4 @@ export default {
 };
 </script>
 
-<style>
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
-</style>
+<style></style>
