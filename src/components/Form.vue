@@ -18,6 +18,7 @@
             name="name"
             placeholder="Character Name"
             v-model="formData.name"
+            @keyup="searchFormValues($event.target.value)"
         />
         <input
             class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
@@ -26,6 +27,7 @@
             name="tags"
             placeholder="Tags"
             v-model="formData.tags"
+            @keyup="searchFormValues($event.target.value)"
         />
         <div class="m-auto" id="form-buttons">
             <input
@@ -71,6 +73,14 @@ export default {
         resetFormValues() {
             this.formData.name = null;
             this.formData.tags = null;
+        },
+        searchFormValues(search) {
+            console.log("data");
+            fetch(
+                `https://danbooru.donmai.us/tags.json?search[name_matches]=${search}*`
+            )
+                .then((response) => response.json())
+                .then((data) => console.log(data));
         },
     },
 };

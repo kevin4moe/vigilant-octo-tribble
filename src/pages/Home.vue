@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import formVue from "@/components/Form.vue";
+import FormVue from "@/components/Form.vue";
 import sourceData from "@/dataL.json";
 export default {
     name: "PageHome",
     components: {
-        formVue,
+        FormVue,
     },
     data() {
         return {
