@@ -13,47 +13,31 @@
         </div>
         <div>
             <input
-                class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
-                id="name"
+                class="m-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold"
                 type="search"
-                name="name"
-                placeholder="Character Name"
+                name="char, tags"
+                placeholder="Characters, Tags, etc..."
                 autocomplete="off"
-                v-model="formData.name"
-                @keyup="searchFormValues($event.target.value)"
-            />
-            <ul hidden>
-                <li>a</li>
-                <li>b</li>
-                <li>c</li>
-            </ul>
-        </div>
-        <div>
-            <input
-                class="m-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold focus:rounded-b-sm"
-                id="tags"
-                type="search"
-                name="tags"
-                placeholder="Tags"
-                autocomplete="off"
+                tabindex="1"
                 @focus="formData.tags.isTrue = true"
-                @blur="blurFocus($event.target)"
-                @keyup="searchBeta"
+                @keyup="searchFormValues($event.target.value)"
             />
             <div class="relative mx-1 -mt-1">
                 <ul
-                    class="absolute flex flex-col w-full bg-white border border-pink-500 rounded-b-lg"
-                    v-show="formData.tags.isTrue | (apiData.length > 0)"
+                    class="absolute flex flex-col w-full bg-white border border-pink-500 rounded-lg"
+                    v-show="apiData.length > 0"
                 >
                     <li
-                        class="hover:bg-pink-500 hover:text-white"
+                        class="hover:bg-pink-500 focus:bg-pink-500 hover:text-white focus:text-white"
                         v-for="(element, index) in apiData"
                         :key="index"
                     >
                         <a
                             class="block px-2 cursor-pointer"
+                            tabindex="2"
                             @click="logFun($event.target.text)"
-                            >{{ element.val }}</a
+                            @keydown.enter="logFun($event.target.text)"
+                            >{{ element.name }}</a
                         >
                     </li>
                 </ul>
@@ -119,22 +103,16 @@ export default {
         },
         searchFormValues(search) {
             fetch(
-                `https://danbooru.donmai.us/tags.json?search[name_matches]=${search}*`
+                `https://danbooru.donmai.us/tags.json?search[name_matches]=${search}*&search[order]=count&limit=5`
             )
                 .then((response) => response.json())
-                .then((data) => (this.apiData = data));
-        },
-        searchBeta() {
-            this.apiData = [
-                { val: "Iosono_3000" },
-                { val: "Iosono_2000" },
-                { val: "Iosono_1000" },
-            ];
+                .then((data) => (this.apiData = data))
+                .catch((err) => console.log(err));
         },
         addArrayData(value) {
             this.formData.tags.arrayData = value;
         },
-        blurFocus(target) {
+        targetClean(target) {
             target.value = "";
             this.formData.tags.isTrue = false;
         },
