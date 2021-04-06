@@ -110,7 +110,6 @@ export default {
         },
         targetClean(target) {
             this.formData.tags.arrayData.push(target);
-            console.log(this.$refs.mainInputElement.value);
             this.$refs.mainInputElement.value = "";
             this.apiData = [];
         },
