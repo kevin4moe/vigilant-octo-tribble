@@ -44,7 +44,7 @@
                 class="mx-1 p-2 bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
                 type="button"
                 value="Refresh"
-                @click="resetFormValues"
+                @click="targetClean(false)"
             />
             <input
                 class="mx-1 p-2 bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
@@ -93,10 +93,6 @@ export default {
 
             e.preventDefault();
         },
-        resetFormValues() {
-            this.formData.name = null;
-            this.formData.tags = null;
-        },
         searchFormValues(search) {
             fetch(
                 `https://danbooru.donmai.us/tags.json?search[name_matches]=${search}*&search[order]=count&limit=5`
@@ -109,7 +105,9 @@ export default {
             this.formData.tags.arrayData = value;
         },
         targetClean(target) {
-            this.formData.tags.arrayData.push(target);
+            target
+                ? this.formData.tags.arrayData.push(target)
+                : (this.formData.tags.arrayData = []);
             this.$refs.mainInputElement.value = "";
             this.apiData = [];
         },
