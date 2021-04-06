@@ -77,6 +77,7 @@
         <span
             class="mr-1 px-3 py-1 bg-pink-100 hover:bg-pink-300 border border-pink-500 rounded-full cursor-pointer"
             v-for="(element, index) in formData.tags.arrayData"
+            @click="formData.tags.arrayData.splice(index, 1)"
             :key="index"
             >{{ element }}</span
         >
