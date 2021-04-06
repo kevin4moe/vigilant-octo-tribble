@@ -1,11 +1,5 @@
 <template>
-    <form
-        class="flex flex-col sm:flex-row mx-auto mb-1"
-        id="app-form"
-        action="/"
-        method="get"
-        @submit="checkForm"
-    >
+    <div class="flex flex-col sm:flex-row mx-auto mb-1" id="app-form">
         <div v-if="formData.errors.length">
             <p v-for="(error, index) in formData.errors" :key="index">
                 <b>{{ error }}</b>
@@ -20,7 +14,7 @@
                 autocomplete="off"
                 tabindex="1"
                 ref="mainInputElement"
-                @keyup="searchFormValues($event.target.value)"
+                @keyup="searchTagsMatches($event.target.value)"
             />
             <div class="relative mx-1 -mt-1">
                 <ul
@@ -50,9 +44,10 @@
                 class="mx-1 p-2 bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
                 type="submit"
                 value="Update"
+                @click="searchPosts"
             />
         </div>
-    </form>
+    </div>
     <div class="flex flex-row">
         <span
             class="mr-1 px-3 py-1 bg-pink-100 hover:bg-pink-300 border border-pink-500 rounded-full cursor-pointer"
@@ -61,6 +56,9 @@
             :key="index"
             >{{ element }}</span
         >
+    </div>
+    <div v-for="element in finallyData" :key="element.id">
+        <img :src="element.file_url" alt="" />
     </div>
 </template>
 <script>
@@ -77,6 +75,7 @@ export default {
                 inputs: false,
             },
             apiData: [],
+            finallyData: [],
         };
     },
     methods: {
@@ -93,12 +92,21 @@ export default {
 
             e.preventDefault();
         },
-        searchFormValues(search) {
+        searchTagsMatches(search) {
             fetch(
                 `https://danbooru.donmai.us/tags.json?search[name_matches]=${search}*&search[order]=count&limit=5`
             )
                 .then((response) => response.json())
                 .then((data) => (this.apiData = data))
+                .catch((err) => console.log(err));
+        },
+        searchPosts() {
+            let formatTags = this.formData.tags.arrayData.join(" ");
+            fetch(
+                `https://danbooru.donmai.us/posts.json?tags=rating:s ${formatTags}`
+            )
+                .then((response) => response.json())
+                .then((data) => (this.finallyData = data))
                 .catch((err) => console.log(err));
         },
         addArrayData(value) {
