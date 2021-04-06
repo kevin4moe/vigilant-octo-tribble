@@ -11,24 +11,52 @@
                 <b>{{ error }}</b>
             </p>
         </div>
-        <input
-            class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
-            id="name"
-            type="search"
-            name="name"
-            placeholder="Character Name"
-            v-model="formData.name"
-            @keyup="searchFormValues($event.target.value)"
-        />
-        <input
-            class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
-            id="tags"
-            type="search"
-            name="tags"
-            placeholder="Tags"
-            v-model="formData.tags"
-            @keyup="searchFormValues($event.target.value)"
-        />
+        <div>
+            <input
+                class="m-1 p-2 border rounded-full border-pink-500 placeholder-pink-600 placeholder-opacity-50 font-semibold"
+                id="name"
+                type="search"
+                name="name"
+                placeholder="Character Name"
+                v-model="formData.name"
+                @keyup="searchFormValues($event.target.value)"
+            />
+            <ul hidden>
+                <li>a</li>
+                <li>b</li>
+                <li>c</li>
+            </ul>
+        </div>
+        <div>
+            <input
+                class="m-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold focus:rounded-b-sm"
+                id="tags"
+                type="search"
+                name="tags"
+                placeholder="Tags"
+                @focus="formData.tags.isTrue = true"
+                @blur="blurFocus($event.target)"
+                @keyup="searchBeta"
+            />
+            <div class="relative mx-1 -mt-1">
+                <ul
+                    class="absolute flex flex-col w-full bg-white border border-pink-500 rounded-b-lg"
+                    v-show="formData.tags.isTrue | (apiData.length > 0)"
+                >
+                    <li
+                        class="hover:bg-pink-500 hover:text-white"
+                        v-for="(element, index) in apiData"
+                        :key="index"
+                    >
+                        <a
+                            class="block px-2 cursor-pointer"
+                            @click="logFun($event.target.text)"
+                            >{{ element.val }}</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="m-auto" id="form-buttons">
             <input
                 class="mx-1 p-2 bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
@@ -43,6 +71,7 @@
             />
         </div>
     </form>
+    {{ formData.tags.arrayData }}
 </template>
 <script>
 export default {
@@ -51,9 +80,13 @@ export default {
             formData: {
                 errors: [],
                 name: null,
-                tags: null,
+                tags: {
+                    isTrue: false,
+                    arrayData: [],
+                },
                 inputs: false,
             },
+            apiData: [],
         };
     },
     methods: {
@@ -75,12 +108,25 @@ export default {
             this.formData.tags = null;
         },
         searchFormValues(search) {
-            console.log("data");
             fetch(
                 `https://danbooru.donmai.us/tags.json?search[name_matches]=${search}*`
             )
                 .then((response) => response.json())
-                .then((data) => console.log(data));
+                .then((data) => (this.apiData = data));
+        },
+        searchBeta() {
+            this.apiData = [{ val: "a" }, { val: "b" }, { val: "c" }];
+        },
+        addArrayData(value) {
+            this.formData.tags.arrayData = value;
+        },
+        blurFocus(target) {
+            target.value = "";
+            this.formData.tags.isTrue = false;
+        },
+        logFun(log) {
+            this.formData.tags.arrayData.push(log);
+            this.apiData = [];
         },
     },
 };
