@@ -19,7 +19,7 @@
                 placeholder="Characters, Tags, etc..."
                 autocomplete="off"
                 tabindex="1"
-                @focus="formData.tags.isTrue = true"
+                ref="mainInputElement"
                 @keyup="searchFormValues($event.target.value)"
             />
             <div class="relative mx-1 -mt-1">
@@ -31,8 +31,8 @@
                         <a
                             class="block px-2 hover:bg-pink-500 focus:bg-pink-500 hover:text-white focus:text-white cursor-pointer"
                             tabindex="2"
-                            @click="logFun($event.target.text)"
-                            @keydown.enter="logFun($event.target.text)"
+                            @click="targetClean($event.target.text)"
+                            @keydown.enter="targetClean($event.target.text)"
                             >{{ element.name }}</a
                         >
                     </li>
@@ -109,11 +109,9 @@ export default {
             this.formData.tags.arrayData = value;
         },
         targetClean(target) {
-            target.value = "";
-            this.formData.tags.isTrue = false;
-        },
-        logFun(log) {
-            this.formData.tags.arrayData.push(log);
+            this.formData.tags.arrayData.push(target);
+            console.log(this.$refs.mainInputElement.value);
+            this.$refs.mainInputElement.value = "";
             this.apiData = [];
         },
     },
