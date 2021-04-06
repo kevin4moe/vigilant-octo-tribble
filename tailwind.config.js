@@ -6,9 +6,9 @@ module.exports = {
     },
     variants: {
         extend: {
-            backgroundColor: ["hover", "active"],
+            backgroundColor: ["hover", "focus", "active"],
             borderRadius: ["focus"],
-            textColor: ["hover"],
+            textColor: ["hover", "focus"],
         },
     },
     plugins: [],

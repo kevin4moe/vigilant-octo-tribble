@@ -27,13 +27,9 @@
                     class="absolute flex flex-col w-full bg-white border border-pink-500 rounded-lg"
                     v-show="apiData.length > 0"
                 >
-                    <li
-                        class="hover:bg-pink-500 focus:bg-pink-500 hover:text-white focus:text-white"
-                        v-for="(element, index) in apiData"
-                        :key="index"
-                    >
+                    <li v-for="(element, index) in apiData" :key="index">
                         <a
-                            class="block px-2 cursor-pointer"
+                            class="block px-2 hover:bg-pink-500 focus:bg-pink-500 hover:text-white focus:text-white cursor-pointer"
                             tabindex="2"
                             @click="logFun($event.target.text)"
                             @keydown.enter="logFun($event.target.text)"
