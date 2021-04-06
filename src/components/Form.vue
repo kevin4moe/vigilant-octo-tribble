@@ -18,6 +18,7 @@
                 type="search"
                 name="name"
                 placeholder="Character Name"
+                autocomplete="off"
                 v-model="formData.name"
                 @keyup="searchFormValues($event.target.value)"
             />
@@ -34,6 +35,7 @@
                 type="search"
                 name="tags"
                 placeholder="Tags"
+                autocomplete="off"
                 @focus="formData.tags.isTrue = true"
                 @blur="blurFocus($event.target)"
                 @keyup="searchBeta"
@@ -71,7 +73,14 @@
             />
         </div>
     </form>
-    {{ formData.tags.arrayData }}
+    <div class="flex flex-row">
+        <span
+            class="mr-1 px-3 py-1 bg-pink-100 hover:bg-pink-300 border border-pink-500 rounded-full cursor-pointer"
+            v-for="(element, index) in formData.tags.arrayData"
+            :key="index"
+            >{{ element }}</span
+        >
+    </div>
 </template>
 <script>
 export default {
@@ -115,7 +124,11 @@ export default {
                 .then((data) => (this.apiData = data));
         },
         searchBeta() {
-            this.apiData = [{ val: "a" }, { val: "b" }, { val: "c" }];
+            this.apiData = [
+                { val: "Iosono_3000" },
+                { val: "Iosono_2000" },
+                { val: "Iosono_1000" },
+            ];
         },
         addArrayData(value) {
             this.formData.tags.arrayData = value;
