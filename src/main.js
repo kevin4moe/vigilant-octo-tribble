@@ -2,8 +2,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./index.css";
 
-import PageHome from "@/pages/PageHome";
-import ThreadShow from "@/pages/PageThreadShow";
+import PageHome from "@/pages/Home";
+import ThreadShow from "@/pages/ThreadShow";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
