@@ -7,7 +7,7 @@
         </div>
         <div>
             <input
-                class="m-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold"
+                class="mx-1 mt-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold"
                 type="search"
                 name="char, tags"
                 placeholder="Characters, Tags, etc..."
@@ -16,7 +16,7 @@
                 ref="mainInputElement"
                 @keyup="searchTagsMatches($event.target.value)"
             />
-            <div class="relative mx-1 -mt-1">
+            <div class="relative mx-1">
                 <ul
                     class="absolute flex flex-col w-full bg-white border border-pink-500 rounded-lg"
                     v-show="apiData.length > 0"
@@ -33,15 +33,15 @@
                 </ul>
             </div>
         </div>
-        <div class="m-auto" id="form-buttons">
+        <div class="flex flex-col sm:flex-row" id="form-buttons">
             <input
-                class="mx-1 p-2 bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
+                class="mx-1 mt-1 p-2 w-auto bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
                 type="button"
                 value="Refresh"
                 @click="targetClean(false)"
             />
             <input
-                class="mx-1 p-2 bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
+                class="mx-1 mt-1 p-2 w-auto bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
                 type="submit"
                 value="Update"
                 @click="searchPosts"
