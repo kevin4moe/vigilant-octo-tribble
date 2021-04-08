@@ -3,32 +3,30 @@
         Search, Like and Follow your favorites loles.
     </h3>
     <form-vue v-on:dataSend="saveData" />
-    <!-- Favorite Posts -->
-    <h2
-        class="my-8 border-b-2 border-pink-100 text-pink-500 text-center text-3xl"
-    >
-        Favorite Posts
-    </h2>
-    <div class="flex flex-row justify-around w-full" id="favPosts">
-        <div v-for="post in jsonData.favoritePosts" :key="post.id">
-            <img :src="post.url" alt="" srcset="" />
+    <h2-default title="Search" />
+    <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1">
+        <div class="mx-auto" v-for="post in searchData" :key="post.id">
+            <img :src="post.preview_file_url" alt="" srcset="" />
         </div>
     </div>
-    <div class="grid grid-cols-3 sm:grid-cols-5 gap-1">
-        <div class="" v-for="post in searchData" :key="post.id">
-            Tags: {{ post.tag_count }}
-            <!-- <img :src="post.preview_file_url" alt="" srcset="" /> -->
+    <!-- Favorite Posts -->
+    <h2-default title="Favorite Posts" />
+    <div class="flex flex-row flex-wrap justify-around w-full" id="favPosts">
+        <div class="m-1" v-for="post in jsonData.favoritePosts" :key="post.id">
+            <img :src="post.url" alt="" srcset="" />
         </div>
     </div>
 </template>
 
 <script>
 import FormVue from "@/components/Form.vue";
+import H2Default from "@/components/h2.vue";
 import sourceData from "@/dataL.json";
 export default {
     name: "PageHome",
     components: {
         FormVue,
+        H2Default,
     },
     data() {
         return {
