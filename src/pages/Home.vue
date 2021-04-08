@@ -2,7 +2,7 @@
     <h3 class="my-8 text-center text-2xl">
         Search, Like and Follow your favorites loles.
     </h3>
-    <form-vue />
+    <form-vue v-on:dataSend="saveData" />
     <!-- Favorite Posts -->
     <h2
         class="my-8 border-b-2 border-pink-100 text-pink-500 text-center text-3xl"
@@ -10,8 +10,14 @@
         Favorite Posts
     </h2>
     <div class="flex flex-row justify-around w-full" id="favPosts">
-        <div class="" v-for="post in jsonData.favoritePosts" :key="post.id">
+        <div v-for="post in jsonData.favoritePosts" :key="post.id">
             <img :src="post.url" alt="" srcset="" />
+        </div>
+    </div>
+    <div class="grid grid-cols-3 sm:grid-cols-5 gap-1">
+        <div class="" v-for="post in searchData" :key="post.id">
+            Tags: {{ post.tag_count }}
+            <!-- <img :src="post.preview_file_url" alt="" srcset="" /> -->
         </div>
     </div>
 </template>
@@ -38,12 +44,8 @@ export default {
                 tags: null,
                 inputs: false,
             },
+            searchData: null,
         };
-    },
-    computed: {
-        arraytoString() {
-            return this.tags.toString();
-        },
     },
     methods: {
         postById(postId) {
@@ -52,22 +54,8 @@ export default {
         userById(userId) {
             return this.jsonData.users.find((p) => p.id === userId);
         },
-        checkForm(e) {
-            if (this.formData.tags) {
-                return true;
-            }
-            this.formData.errors = [];
-            if (!this.formData.tags) {
-                this.formData.errors.push(
-                    "No olvides escribir lo que quieres buscar."
-                );
-            }
-
-            e.preventDefault();
-        },
-        resetFormValues() {
-            this.formData.name = null;
-            this.formData.tags = null;
+        saveData(data) {
+            this.searchData = data;
         },
     },
     mounted() {

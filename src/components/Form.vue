@@ -63,6 +63,7 @@
 </template>
 <script>
 export default {
+    emits: ["dataSend"],
     data() {
         return {
             formData: {
@@ -106,7 +107,7 @@ export default {
                 `https://danbooru.donmai.us/posts.json?tags=rating:s ${formatTags}`
             )
                 .then((response) => response.json())
-                .then((data) => (this.finallyData = data))
+                .then((data) => this.$emit("dataSend", data))
                 .catch((err) => console.log(err));
         },
         addArrayData(value) {
