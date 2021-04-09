@@ -3,7 +3,7 @@
         Search, Like and Follow your favorites loles.
     </h3>
     <form-vue v-on:dataSend="saveData" />
-    <h2-default title="Search" />
+    <h2-default title="Search" :isTrue="!!searchData" />
     <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1">
         <div class="mx-auto" v-for="post in searchData" :key="post.id">
             <img
@@ -14,7 +14,7 @@
         </div>
     </div>
     <!-- Last Posts in Danbooru -->
-    <h2-default title="Last Posts in Danbooru" />
+    <h2-default title="Last Posts in Danbooru" :isTrue="true" />
     <div class="flex flex-row flex-wrap justify-around w-full" id="favPosts">
         <div class="m-1" v-for="post in lastPosts" :key="post.id">
             <img

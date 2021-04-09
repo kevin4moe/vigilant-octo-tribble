@@ -1,5 +1,6 @@
 <template>
     <h2
+        v-show="isTrue"
         class="my-8 border-b-2 border-pink-100 text-pink-500 text-center text-3xl"
     >
         {{ title }}
@@ -7,6 +8,6 @@
 </template>
 <script>
 export default {
-    props: ["title"],
+    props: ["title", "isTrue"],
 };
 </script>
