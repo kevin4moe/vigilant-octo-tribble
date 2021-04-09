@@ -6,14 +6,22 @@
     <h2-default title="Search" />
     <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1">
         <div class="mx-auto" v-for="post in searchData" :key="post.id">
-            <img :src="post.preview_file_url" alt="" srcset="" />
+            <img
+                :src="post.preview_file_url"
+                :title="`Character(s): ${post.tag_string_character}`"
+                :alt="`Character(s): ${post.tag_string_character}`"
+            />
         </div>
     </div>
-    <!-- Favorite Posts -->
-    <h2-default title="Favorite Posts" />
+    <!-- Last Posts in Danbooru -->
+    <h2-default title="Last Posts in Danbooru" />
     <div class="flex flex-row flex-wrap justify-around w-full" id="favPosts">
-        <div class="m-1" v-for="post in jsonData.favoritePosts" :key="post.id">
-            <img :src="post.url" alt="" srcset="" />
+        <div class="m-1" v-for="post in lastPosts" :key="post.id">
+            <img
+                :src="post.preview_file_url"
+                :title="`Character(s): ${post.tag_string_character}`"
+                :alt="`Character(s): ${post.tag_string_character}`"
+            />
         </div>
     </div>
 </template>
@@ -43,6 +51,7 @@ export default {
                 inputs: false,
             },
             searchData: null,
+            lastPosts: null,
         };
     },
     methods: {
@@ -55,6 +64,12 @@ export default {
         saveData(data) {
             this.searchData = data;
         },
+        searchPosts() {
+            fetch(`https://danbooru.donmai.us/posts.json?tags=rating:s&limit=5`)
+                .then((response) => response.json())
+                .then((data) => (this.lastPosts = data))
+                .catch((err) => console.log(err));
+        },
     },
     mounted() {
         // Query params
@@ -62,10 +77,7 @@ export default {
             this.formData.name = this.$route.query.name;
             this.formData.tags = this.$route.query.tags;
         }
-        this.jsonData.favoritePosts = this.jsonData.favoritePosts.map((f) =>
-            this.postById(f)
-        );
-        // y.filter(item => item.charNames.toString().search("r") > -1)
+        this.searchPosts();
     },
 };
 </script>
