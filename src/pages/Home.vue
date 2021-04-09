@@ -2,7 +2,7 @@
     <h3 class="my-8 text-center text-2xl">
         Search, Like and Follow your favorites loles.
     </h3>
-    <form-vue v-on:dataSend="saveData" />
+    <form-vue v-on:search="search" />
     <h2-default title="Search" :isTrue="!!searchData" />
     <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1">
         <div class="mx-auto" v-for="post in searchData" :key="post.id">
@@ -45,16 +45,23 @@ export default {
             },
             searchData: null,
             lastPosts: null,
+            config: {
+                rating: "s",
+            },
         };
     },
     methods: {
-        saveData(data) {
-            this.searchData = data;
+        search(tags) {
+            tags = tags.join("%20");
+            this.searchPosts("searchData", tags, "30");
         },
-        searchPosts() {
-            fetch(`https://danbooru.donmai.us/posts.json?tags=rating:s&limit=5`)
+        searchPosts(section, tags, limit) {
+            var url = "https://danbooru.donmai.us/posts.json";
+            fetch(
+                `${url}?tags=rating:${this.config.rating}%20${tags}&limit=${limit}`
+            )
                 .then((response) => response.json())
-                .then((data) => (this.lastPosts = data))
+                .then((data) => (this[section] = data))
                 .catch((err) => console.log(err));
         },
     },
@@ -64,7 +71,7 @@ export default {
             this.formData.name = this.$route.query.name;
             this.formData.tags = this.$route.query.tags;
         }
-        this.searchPosts();
+        this.searchPosts("lastPosts", "", "5");
     },
 };
 </script>

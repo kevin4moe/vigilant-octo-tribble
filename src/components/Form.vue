@@ -19,9 +19,9 @@
             <div class="relative mx-1">
                 <ul
                     class="absolute flex flex-col w-full bg-white border border-pink-500 rounded-lg"
-                    v-show="apiData.length > 0"
+                    v-show="tagsData.length > 0"
                 >
-                    <li v-for="(element, index) in apiData" :key="index">
+                    <li v-for="(element, index) in tagsData" :key="index">
                         <a
                             class="block px-2 hover:bg-pink-500 focus:bg-pink-500 hover:text-white focus:text-white cursor-pointer"
                             tabindex="2"
@@ -44,7 +44,7 @@
                 class="mx-1 mt-1 p-2 w-auto bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
                 type="submit"
                 value="Update"
-                @click="searchPosts"
+                @click="$emit('search', formData.tags.arrayData)"
             />
         </div>
     </div>
@@ -57,13 +57,10 @@
             >{{ element }}</span
         >
     </div>
-    <div v-for="element in finallyData" :key="element.id">
-        <img :src="element.file_url" alt="" />
-    </div>
 </template>
 <script>
 export default {
-    emits: ["dataSend"],
+    emits: ["search"],
     data() {
         return {
             formData: {
@@ -75,8 +72,7 @@ export default {
                 },
                 inputs: false,
             },
-            apiData: [],
-            finallyData: [],
+            tagsData: [],
         };
     },
     methods: {
@@ -98,27 +94,15 @@ export default {
                 `https://danbooru.donmai.us/tags.json?search[name_matches]=${search}*&search[order]=count&limit=5`
             )
                 .then((response) => response.json())
-                .then((data) => (this.apiData = data))
+                .then((data) => (this.tagsData = data))
                 .catch((err) => console.log(err));
-        },
-        searchPosts() {
-            let formatTags = this.formData.tags.arrayData.join(" ");
-            fetch(
-                `https://danbooru.donmai.us/posts.json?tags=rating:s ${formatTags}`
-            )
-                .then((response) => response.json())
-                .then((data) => this.$emit("dataSend", data))
-                .catch((err) => console.log(err));
-        },
-        addArrayData(value) {
-            this.formData.tags.arrayData = value;
         },
         targetClean(target) {
             target
                 ? this.formData.tags.arrayData.push(target)
                 : (this.formData.tags.arrayData = []);
             this.$refs.mainInputElement.value = "";
-            this.apiData = [];
+            this.tagsData = [];
         },
     },
 };
