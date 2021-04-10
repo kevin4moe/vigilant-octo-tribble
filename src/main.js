@@ -3,7 +3,6 @@ import App from "./App.vue";
 import "./index.css";
 
 import PageHome from "@/pages/Home";
-import ThreadShow from "@/pages/ThreadShow";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -12,12 +11,6 @@ const routes = [
         name: "Home",
         component: PageHome,
         props: (route) => ({ query: route.query.q }),
-    },
-    {
-        path: "/thread/:id",
-        name: "Thread Show",
-        component: ThreadShow,
-        props: true,
     },
 ];
 
