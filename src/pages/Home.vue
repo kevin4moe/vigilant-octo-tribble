@@ -7,28 +7,34 @@
         v-on:rating="changeRating"
         v-on:page="changePage"
     />
-    <h2-default title="Search" :isTrue="!!searchData" />
-    <num-list
-        :isShow="!!searchData"
-        :pages="config.pages"
-        :actualPage="config.page"
-        v-on:changePage="changePage"
-    />
-    <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1 my-4">
-        <div class="mx-auto" v-for="post in searchData" :key="post.id">
-            <img
-                :src="post.preview_file_url"
-                :title="`Character(s): ${post.tag_string_character}`"
-                :alt="`Character(s): ${post.tag_string_character}`"
-            />
+    <article>
+        <h2-default :title="`Page: ${config.page}`" :isTrue="!!searchData" />
+        <num-list
+            :isShow="!!searchData"
+            :pages="config.pages"
+            :actualPage="config.page"
+            v-on:changePage="changePage"
+        />
+        <h2-default title="Loading..." :isTrue="postsFetch.isload" />
+        <div
+            class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1 my-4"
+            v-show="!postsFetch.isload"
+        >
+            <div class="mx-auto" v-for="post in searchData" :key="post.id">
+                <img
+                    :src="post.preview_file_url"
+                    :title="`Character(s): ${post.tag_string_character}`"
+                    :alt="`Character(s): ${post.tag_string_character}`"
+                />
+            </div>
         </div>
-    </div>
-    <num-list
-        :isShow="!!searchData"
-        :pages="config.pages"
-        :actualPage="config.page"
-        v-on:changePage="changePage"
-    />
+        <num-list
+            :isShow="!!searchData"
+            :pages="config.pages"
+            :actualPage="config.page"
+            v-on:changePage="changePage"
+        />
+    </article>
     <!-- Last Posts in Danbooru -->
     <h2-default title="Last Posts in Danbooru" :isTrue="true" />
     <div class="flex flex-row flex-wrap justify-around w-full" id="favPosts">
@@ -70,25 +76,36 @@ export default {
                 url: "https://danbooru.donmai.us/posts.json",
                 tags: "",
             },
+            postsFetch: {
+                isload: false,
+                promise: null,
+            },
         };
     },
     methods: {
         search(tags) {
+            this.postsFetch.isload = true;
             tags = tags.join("%20");
             this.config.tags = tags;
-            this.searchPosts("searchData", tags, "20");
+            this.searchPosts("searchData", 20, tags);
         },
-        searchPosts(
-            section = "searchData",
-            limit = 20,
-            tags = this.config.tags
-        ) {
-            fetch(
+        searchPosts(section, limit, tags) {
+            const promise = fetch(
                 `${this.config.url}?page=${this.config.page}&tags=rating:${this.config.rating}%20${tags}&limit=${limit}`
             )
                 .then((response) => response.json())
                 .then((data) => (this[section] = data))
+                .then(() => (this.postsFetch.isload = false))
                 .catch((err) => console.log(err));
+            this.postsFetch.promise = promise;
+            return new Promise((resolve) => {
+                promise.then((result) => {
+                    if (promise == this.postsFetch.promise) {
+                        this.postsFetch.promise = null;
+                        resolve(result);
+                    }
+                });
+            });
         },
         actualPage() {
             this.config.pages = Array.from({ length: 10 }, (_, i) => i + 1);

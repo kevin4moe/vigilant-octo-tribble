@@ -91,7 +91,7 @@
 <script>
 export default {
     name: "FormComponent",
-    emits: ["search"],
+    emits: ["search", "rating", "page"],
     data() {
         return {
             errors: [],
