@@ -2,7 +2,11 @@
     <h3 class="my-8 text-center text-2xl">
         Search, Like and Follow your favorites loles.
     </h3>
-    <form-vue v-on:search="search" />
+    <form-vue
+        v-on:search="search"
+        v-on:rating="changeRating"
+        v-on:page="changePage"
+    />
     <h2-default title="Search" :isTrue="!!searchData" />
     <num-list
         :isShow="!!searchData"
@@ -76,8 +80,8 @@ export default {
         },
         searchPosts(
             section = "searchData",
-            tags = this.config.tags,
-            limit = 20
+            limit = 20,
+            tags = this.config.tags
         ) {
             fetch(
                 `${this.config.url}?page=${this.config.page}&tags=rating:${this.config.rating}%20${tags}&limit=${limit}`
@@ -105,10 +109,14 @@ export default {
             this.actualPage();
             this.searchPosts();
         },
+        changeRating(rating) {
+            this.config.rating = rating;
+            this.searchPosts();
+        },
     },
     mounted() {
         this.actualPage();
-        this.searchPosts("lastPosts", "", "5");
+        this.searchPosts("lastPosts", "5");
     },
 };
 </script>

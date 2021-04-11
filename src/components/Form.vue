@@ -17,7 +17,7 @@
                 type="text"
                 list="rating"
                 name="selectRating"
-                @keydown.enter="testConsole($event.target.value)"
+                @keydown.enter="checkForm('rating', $event.target.value)"
             />
             <datalist id="rating">
                 <option value="s"></option>
@@ -32,7 +32,7 @@
                 max="10"
                 value="1"
                 name="selectNumber"
-                @keydown.enter="testConsole($event.target.value)"
+                @keydown.enter="checkForm('page', $event.target.value)"
             />
         </div>
         <div>
@@ -74,7 +74,7 @@
                 class="mx-1 mt-1 p-2 w-auto bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
                 type="submit"
                 value="Update"
-                @click="checkForm()"
+                @click="checkForm('search')"
             />
         </div>
     </div>
@@ -100,8 +100,18 @@ export default {
         };
     },
     methods: {
-        checkForm() {
-            this.$emit("search", this.tagList);
+        checkForm(emitValue, value = false) {
+            switch (emitValue) {
+                case "search":
+                    this.$emit("search", this.tagList);
+                    break;
+                case "rating":
+                    this.$emit("rating", value);
+                    break;
+                case "page":
+                    this.$emit("page", value);
+                    break;
+            }
         },
         searchTagsMatches(search) {
             fetch(
