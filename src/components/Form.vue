@@ -1,13 +1,43 @@
 <template>
+    <div class="mx-auto">
+        <p class="text-pink-900" v-for="(error, index) in errors" :key="index">
+            <b>{{ error }}</b>
+        </p>
+    </div>
     <div class="flex flex-col sm:flex-row mx-auto mb-1" id="app-form">
-        <div>
-            <p v-for="(error, index) in errors" :key="index">
-                <b>{{ error }}</b>
-            </p>
+        <button
+            class="mx-1 mt-1 p-2 border border-pink-500 rounded-lg text-pink-200 font-semibold"
+            v-show="false"
+        >
+            Advance
+        </button>
+        <div class="flex flex-row justify-center">
+            <input
+                class="box-content w-12 mx-1 mt-1 px-1 border border-pink-500 rounded-lg text-center text-pink-200 font-semibold"
+                type="text"
+                list="rating"
+                name="selectRating"
+                @keydown.enter="testConsole($event.target.value)"
+            />
+            <datalist id="rating">
+                <option value="s"></option>
+                <option value="q"></option>
+                <option value="e"></option>
+            </datalist>
+
+            <input
+                class="box-content w-12 mx-1 mt-1 px-1 border border-pink-500 rounded-lg text-center text-pink-200 font-semibold"
+                type="number"
+                min="1"
+                max="10"
+                value="1"
+                name="selectNumber"
+                @keydown.enter="testConsole($event.target.value)"
+            />
         </div>
         <div>
             <input
-                class="mx-1 mt-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold"
+                class="w-auto mx-1 mt-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold"
                 type="search"
                 name="char, tags"
                 placeholder="Characters, Tags, etc..."
@@ -48,7 +78,7 @@
             />
         </div>
     </div>
-    <div class="flex flex-row">
+    <div class="flex flex-row justify-center">
         <span
             class="mr-1 px-3 py-1 bg-pink-100 hover:bg-pink-300 border border-pink-500 rounded-full cursor-pointer"
             v-for="(element, index) in tagList"
@@ -98,6 +128,9 @@ export default {
                     ? this.tagList.push(value)
                     : this.errors.push("Tag is already exists.");
             }
+        },
+        testConsole(val) {
+            console.log(val);
         },
     },
 };
