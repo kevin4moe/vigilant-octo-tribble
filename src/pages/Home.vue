@@ -7,42 +7,6 @@
         v-on:rating="changeRating"
         v-on:page="changePage"
     />
-    <aside v-if="!!postData">
-        <main class="flex flex-col">
-            <aside class="flex flex-row justify-center my-1">
-                <button
-                    class="mx-1 px-4 py-2 border border-pink-500 rounded bg-pink-100"
-                >
-                    Post
-                </button>
-                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
-                    {{ postData.tag_string_copyright }}
-                </button>
-                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
-                    Artist: {{ postData.tag_string_artist }}
-                </button>
-            </aside>
-            <figure>
-                <img
-                    class="mx-auto"
-                    :src="postData.file_url"
-                    :alt="postData.tag_string_character"
-                />
-            </figure>
-            <aside class="px-2">
-                <p>
-                    <span class="font-bold text-blue-700"> Artist: </span>
-                    {{ postData.tag_string_artist }}
-                    <span class="font-bold text-yellow-700"> Characters: </span
-                    >{{ postData.tag_string_character }}
-                </p>
-                <p>
-                    <span class="font-bold text-pink-700"> Tags: </span
-                    >{{ postData.tag_string_general }}
-                </p>
-            </aside>
-        </main>
-    </aside>
     <article>
         <h2-default :title="`Page: ${config.page}`" :isTrue="!!searchData" />
         <num-list
@@ -72,6 +36,87 @@
             v-on:changePage="changePage"
         />
     </article>
+    <aside v-if="!!postData">
+        <h2-default :title="`Post: ${postData.id}`" :isTrue="!!searchData" />
+        <main class="flex flex-col">
+            <figure>
+                <img
+                    class="mx-auto"
+                    :src="postData.preview_file_url"
+                    :alt="postData.tag_string_character"
+                    @click="$event.target.src = postData.file_url"
+                />
+                <a
+                    class="block mx-auto"
+                    :href="
+                        postData.large_file_url
+                            ? postData.large_file_url
+                            : postData.file_url
+                    "
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    v-show="postData.file_url"
+                >
+                    See full image.
+                </a>
+            </figure>
+            <aside class="flex flex-row justify-center my-1">
+                <button
+                    class="mx-1 px-4 py-2 border border-pink-500 rounded bg-pink-100"
+                >
+                    Post
+                </button>
+                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
+                    {{ postData.tag_string_copyright }}
+                </button>
+                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
+                    Artist: {{ postData.tag_string_artist }}
+                </button>
+            </aside>
+            <aside class="px-2">
+                <p>
+                    <span class="font-bold text-blue-700"> Artist: </span>
+                    <button
+                        class="p-2 bg-blue-100 hover:bg-blue-200 rounded underline"
+                        @click="
+                            searchPosts(
+                                'searchData',
+                                20,
+                                postData.tag_string_artist
+                            )
+                        "
+                    >
+                        {{ postData.tag_string_artist }}
+                    </button>
+
+                    <span class="font-bold text-yellow-700"> Characters: </span
+                    ><button
+                        class="p-2 bg-yellow-100 hover:bg-yellow-200 rounded underline"
+                        @click="
+                            searchPosts(
+                                'searchData',
+                                20,
+                                postData.tag_string_character
+                            )
+                        "
+                    >
+                        {{ postData.tag_string_character }}
+                    </button>
+                </p>
+                <p>
+                    <span class="font-bold text-pink-700"> Tags: </span>
+                    <button
+                        class="p-2 hover:bg-pink-100 rounded underline"
+                        v-for="tag in postData.tag_string_general.split(' ')"
+                        @click="searchPosts('searchData', 20, tag)"
+                        :key="tag"
+                    >
+                        {{ tag }}
+                    </button>
+                </p>
+            </aside>
+        </main>
+    </aside>
     <!-- Last Posts in Danbooru -->
     <article id="favPosts">
         <h2-default title="Last Posts in Danbooru" :isTrue="!!lastPosts" />
