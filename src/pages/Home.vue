@@ -7,6 +7,42 @@
         v-on:rating="changeRating"
         v-on:page="changePage"
     />
+    <aside v-if="!!postData">
+        <main class="flex flex-col">
+            <aside class="flex flex-row justify-center my-1">
+                <button
+                    class="mx-1 px-4 py-2 border border-pink-500 rounded bg-pink-100"
+                >
+                    Post
+                </button>
+                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
+                    {{ postData.tag_string_copyright }}
+                </button>
+                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
+                    Artist: {{ postData.tag_string_artist }}
+                </button>
+            </aside>
+            <figure>
+                <img
+                    class="mx-auto"
+                    :src="postData.file_url"
+                    :alt="postData.tag_string_character"
+                />
+            </figure>
+            <aside class="px-2">
+                <p>
+                    <span class="font-bold text-blue-700"> Artist: </span>
+                    {{ postData.tag_string_artist }}
+                    <span class="font-bold text-yellow-700"> Characters: </span
+                    >{{ postData.tag_string_character }}
+                </p>
+                <p>
+                    <span class="font-bold text-pink-700"> Tags: </span
+                    >{{ postData.tag_string_general }}
+                </p>
+            </aside>
+        </main>
+    </aside>
     <article>
         <h2-default :title="`Page: ${config.page}`" :isTrue="!!searchData" />
         <num-list
@@ -25,6 +61,7 @@
                     :src="post.preview_file_url"
                     :title="`Character(s): ${post.tag_string_character}`"
                     :alt="`Character(s): ${post.tag_string_character}`"
+                    @click="searchPostById(post.id)"
                 />
             </figure>
         </main>
@@ -76,19 +113,14 @@ export default {
     },
     data() {
         return {
-            formData: {
-                errors: [],
-                name: null,
-                tags: null,
-                inputs: false,
-            },
+            postData: null,
             searchData: null,
             lastPosts: null,
             config: {
                 rating: "s",
                 pages: null,
                 page: 1,
-                url: "https://danbooru.donmai.us/posts.json",
+                url: "https://danbooru.donmai.us",
                 tags: "",
             },
             postsFetch: {
@@ -106,7 +138,7 @@ export default {
         },
         searchPosts(section, limit, tags) {
             const promise = fetch(
-                `${this.config.url}?page=${this.config.page}&tags=rating:${this.config.rating}%20${tags}&limit=${limit}`
+                `${this.config.url}/posts.json?page=${this.config.page}&tags=rating:${this.config.rating}%20${tags}&limit=${limit}`
             )
                 .then((response) => response.json())
                 .then((data) => (this[section] = data))
@@ -121,6 +153,12 @@ export default {
                     }
                 });
             });
+        },
+        searchPostById(id) {
+            fetch(`${this.config.url}/posts/${id}.json`)
+                .then((response) => response.json())
+                .then((data) => (this.postData = data))
+                .catch((err) => console.log(err));
         },
         actualPage() {
             this.config.pages = Array.from({ length: 10 }, (_, i) => i + 1);
