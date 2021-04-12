@@ -16,18 +16,18 @@
             v-on:changePage="changePage"
         />
         <h2-default title="Loading..." :isTrue="postsFetch.isload" />
-        <div
+        <main
             class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-1 my-4"
             v-show="!postsFetch.isload"
         >
-            <div class="mx-auto" v-for="post in searchData" :key="post.id">
+            <figure class="mx-auto" v-for="post in searchData" :key="post.id">
                 <img
                     :src="post.preview_file_url"
                     :title="`Character(s): ${post.tag_string_character}`"
                     :alt="`Character(s): ${post.tag_string_character}`"
                 />
-            </div>
-        </div>
+            </figure>
+        </main>
         <num-list
             :isShow="!!searchData"
             :pages="config.pages"
@@ -36,16 +36,31 @@
         />
     </article>
     <!-- Last Posts in Danbooru -->
-    <h2-default title="Last Posts in Danbooru" :isTrue="true" />
-    <div class="flex flex-row flex-wrap justify-around w-full" id="favPosts">
-        <div class="m-1" v-for="post in lastPosts" :key="post.id">
-            <img
-                :src="post.preview_file_url"
-                :title="`Character(s): ${post.tag_string_character}`"
-                :alt="`Character(s): ${post.tag_string_character}`"
-            />
-        </div>
-    </div>
+    <article id="favPosts">
+        <h2-default title="Last Posts in Danbooru" :isTrue="!!lastPosts" />
+        <main
+            class="flex flex-row flex-wrap items-baseline justify-around w-full"
+        >
+            <figure
+                class="m-1 border border-pink-100"
+                v-for="post in lastPosts"
+                :key="post.id"
+            >
+                <img
+                    :src="post.preview_file_url"
+                    :title="`Character(s): ${post.tag_string_character}`"
+                    :alt="`Character(s): ${post.tag_string_character}`"
+                />
+                <footer class="h-auto pl-1 pb-1 bg-pink-100 bg-opacity-50">
+                    <h3 class="font-bold text-sm text-pink-700">Copyright</h3>
+                    <p class="text-xs">{{ post.tag_string_copyright }}</p>
+
+                    <h3 class="font-bold text-sm text-blue-700">Artist</h3>
+                    <p class="text-xs">{{ post.tag_string_artist }}</p>
+                </footer>
+            </figure>
+        </main>
+    </article>
 </template>
 
 <script>
@@ -124,16 +139,16 @@ export default {
         changePage(page) {
             this.config.page = page;
             this.actualPage();
-            this.searchPosts();
+            this.searchPosts("searchData", 20, this.config.tags);
         },
         changeRating(rating) {
             this.config.rating = rating;
-            this.searchPosts();
+            this.searchPosts("searchData", 20, this.config.tags);
         },
     },
     mounted() {
         this.actualPage();
-        this.searchPosts("lastPosts", "5");
+        this.searchPosts("lastPosts", 5, "");
     },
 };
 </script>
