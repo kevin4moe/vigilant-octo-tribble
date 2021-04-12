@@ -3,7 +3,7 @@
         Search, Like and Follow your favorites loles.
     </h3>
     <form-vue
-        v-on:search="search"
+        v-on:search="searchPostByTags"
         v-on:rating="changeRating"
         v-on:page="changePage"
     />
@@ -47,7 +47,7 @@
                     @click="$event.target.src = postData.file_url"
                 />
                 <a
-                    class="block mx-auto"
+                    class="block mb-4 bg-pink-100 text-center"
                     :href="
                         postData.large_file_url
                             ? postData.large_file_url
@@ -60,20 +60,71 @@
                     See full image.
                 </a>
             </figure>
-            <aside class="flex flex-row justify-center my-1">
+            <aside class="flex flex-row justify-center my-1" ref="menuButtons">
                 <button
                     class="mx-1 px-4 py-2 border border-pink-500 rounded bg-pink-100"
+                    @click="changeGlob('posts')"
                 >
                     Post
                 </button>
-                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
+                <button
+                    class="mx-1 px-4 py-2 border border-pink-500 rounded"
+                    @click="changeGlob('copyright')"
+                >
                     {{ postData.tag_string_copyright }}
                 </button>
-                <button class="mx-1 px-4 py-2 border border-pink-500 rounded">
+                <button
+                    class="mx-1 px-4 py-2 border border-pink-500 rounded"
+                    @click="changeGlob('artists')"
+                >
                     Artist: {{ postData.tag_string_artist }}
                 </button>
             </aside>
-            <aside class="px-2">
+            <article ref="menuCopyright"></article>
+            <article
+                ref="menuArtists"
+                hidden
+                v-if="!!wikiFetch.artists.artist_id"
+            >
+                <h3 class="my-2 text-xl font-bold">
+                    <span class="text-pink-500">Artist:</span>
+
+                    <span
+                        class="mx-1 px-1 border border-blue-500 rounded text-blue-300"
+                    >
+                        {{ wikiFetch.artists.name }}</span
+                    >
+                </h3>
+                <h4 class="my-2 text-lg font-bold text-pink-500">
+                    Other names
+                </h4>
+                <span
+                    class="mx-1 my-2 px-1 border border-pink-500 rounded text-pink-300"
+                    v-for="name in wikiFetch.artists.other_names"
+                    :key="name"
+                >
+                    {{ name }}
+                </span>
+                <h4 class="my-2 text-lg font-bold text-pink-500">URL</h4>
+                <ul>
+                    <li v-for="url in wikiFetch.artists.urls" :key="url">
+                        <a
+                            class="mx-1 my-2 px-1 text-pink-900"
+                            :class="{
+                                'line-through text-opacity-50 cursor-not-allowed': url.startsWith(
+                                    '-'
+                                ),
+                            }"
+                            :href="url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {{ url }}
+                        </a>
+                    </li>
+                </ul>
+            </article>
+            <article ref="menuPosts">
                 <p>
                     <span class="font-bold text-blue-700"> Artist: </span>
                     <button
@@ -114,7 +165,7 @@
                         {{ tag }}
                     </button>
                 </p>
-            </aside>
+            </article>
         </main>
     </aside>
     <!-- Last Posts in Danbooru -->
@@ -161,6 +212,11 @@ export default {
             postData: null,
             searchData: null,
             lastPosts: null,
+            wikiFetch: {
+                artists: null,
+                copyrights: null,
+                promise: null,
+            },
             config: {
                 rating: "s",
                 pages: null,
@@ -175,7 +231,7 @@ export default {
         };
     },
     methods: {
-        search(tags) {
+        searchPostByTags(tags) {
             this.postsFetch.isload = true;
             tags = tags.join("%20");
             this.config.tags = tags;
@@ -199,10 +255,34 @@ export default {
                 });
             });
         },
+        searchWikiPageByTags(wiki, searchValue, name) {
+            const promiseWiki = fetch(
+                `${this.config.url}/${wiki}.json?search[name]=${searchValue}&limit=1`
+            )
+                .then((response) => response.json())
+                .then((data) => (this.wikiFetch[name] = data[0]))
+                .catch((err) => console.log(err));
+            this.wikiFetch.promise = promiseWiki;
+            return new Promise((resolve) => {
+                promiseWiki.then((result) => {
+                    if (promiseWiki == this.wikiFetch.promise) {
+                        this.wikiFetch.promise = null;
+                        resolve(result);
+                    }
+                });
+            });
+        },
         searchPostById(id) {
             fetch(`${this.config.url}/posts/${id}.json`)
                 .then((response) => response.json())
                 .then((data) => (this.postData = data))
+                .then(() =>
+                    this.searchWikiPageByTags(
+                        "artist_versions",
+                        this.postData.tag_string_artist,
+                        "artists"
+                    )
+                )
                 .catch((err) => console.log(err));
         },
         actualPage() {
@@ -227,6 +307,28 @@ export default {
         changeRating(rating) {
             this.config.rating = rating;
             this.searchPosts("searchData", 20, this.config.tags);
+        },
+        changeGlob(value) {
+            console.log(this.$refs.menuButtons);
+            switch (value) {
+                case "copyright":
+                    this.$refs.menuCopyright.hidden = false;
+                    this.$refs.menuArtists.hidden = true;
+                    this.$refs.menuPosts.hidden = true;
+                    break;
+                case "artists":
+                    this.$refs.menuCopyright.hidden = true;
+                    this.$refs.menuArtists.hidden = false;
+                    this.$refs.menuPosts.hidden = true;
+                    break;
+                case "posts":
+                    this.$refs.menuCopyright.hidden = true;
+                    this.$refs.menuArtists.hidden = true;
+                    this.$refs.menuPosts.hidden = false;
+                    break;
+                default:
+                    break;
+            }
         },
     },
     mounted() {
