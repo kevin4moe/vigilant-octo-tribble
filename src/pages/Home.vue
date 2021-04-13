@@ -286,17 +286,13 @@ export default {
                 .catch((err) => console.log(err));
         },
         actualPage() {
-            this.config.pages = Array.from({ length: 10 }, (_, i) => i + 1);
-            if (this.config.page > 10) {
+            if (this.config.page > 5) {
                 this.config.pages = Array.from(
                     { length: 10 },
-                    (_, i) => i + 10
+                    (_, i) => i + this.config.page - 4
                 );
-            } else if (this.config.page > 4) {
-                this.config.pages = Array.from(
-                    { length: 10 },
-                    (_, i) => i + this.config.page
-                );
+            } else {
+                this.config.pages = Array.from({ length: 10 }, (_, i) => i + 1);
             }
         },
         changePage(page) {
