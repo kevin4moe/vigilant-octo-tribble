@@ -4,10 +4,7 @@
             <b>{{ error }}</b>
         </p>
     </div>
-    <div
-        class="flex flex-col sm:flex-row mx-auto mb-1 w-full sm:w-3/4"
-        id="app-form"
-    >
+    <div class="flex flex-col sm:flex-row mx-auto mb-1" id="app-form">
         <div title="Form input text">
             <input
                 class="w-auto mx-1 mt-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold"
