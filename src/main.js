@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, defineAsyncComponent } from "vue";
 import App from "./App.vue";
 import "./index.css";
 
@@ -10,7 +10,6 @@ const routes = [
         path: "/",
         name: "Home",
         component: PageHome,
-        props: (route) => ({ query: route.query.q }),
     },
 ];
 
@@ -19,6 +18,13 @@ const router = createRouter({
     routes,
 });
 
+const AsyncComp = defineAsyncComponent(() => {
+    import("@/components/WikiArtist.vue");
+    import("@/components/WikiImage.vue");
+    import("@/components/WikiPost.vue");
+});
+
 const forumApp = createApp(App);
+forumApp.component("async-component", AsyncComp);
 forumApp.use(router);
 forumApp.mount("#app");

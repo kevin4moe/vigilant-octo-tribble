@@ -4,38 +4,11 @@
             <b>{{ error }}</b>
         </p>
     </div>
-    <div class="flex flex-col sm:flex-row mx-auto mb-1" id="app-form">
-        <button
-            class="mx-1 mt-1 p-2 border border-pink-500 rounded-lg text-pink-200 font-semibold"
-            v-show="false"
-        >
-            Advance
-        </button>
-        <div class="flex flex-row justify-center">
-            <input
-                class="box-content w-12 mx-1 mt-1 px-1 border border-pink-500 rounded-lg text-center text-pink-200 font-semibold"
-                type="text"
-                list="rating"
-                name="selectRating"
-                @keydown.enter="checkForm('rating', $event.target.value)"
-            />
-            <datalist id="rating">
-                <option value="s"></option>
-                <option value="q"></option>
-                <option value="e"></option>
-            </datalist>
-
-            <input
-                class="box-content w-12 mx-1 mt-1 px-1 border border-pink-500 rounded-lg text-center text-pink-200 font-semibold"
-                type="number"
-                min="1"
-                max="10"
-                value="1"
-                name="selectNumber"
-                @keydown.enter="checkForm('page', $event.target.value)"
-            />
-        </div>
-        <div>
+    <div
+        class="flex flex-col sm:flex-row mx-auto mb-1 w-full sm:w-3/4"
+        id="app-form"
+    >
+        <div title="Form input text">
             <input
                 class="w-auto mx-1 mt-1 p-2 border border-pink-500 rounded-lg placeholder-pink-600 placeholder-opacity-50 font-semibold"
                 type="search"
@@ -55,15 +28,15 @@
                         <a
                             class="block px-2 hover:bg-pink-500 focus:bg-pink-500 hover:text-white focus:text-white cursor-pointer"
                             tabindex="2"
-                            @click="targetClean($event.target.text)"
-                            @keydown.enter="targetClean($event.target.text)"
+                            @click="targetClean(element)"
+                            @keydown.enter="targetClean(element)"
                             >{{ element.name }}</a
                         >
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="flex flex-col sm:flex-row" id="form-buttons">
+        <div class="flex flex-col sm:flex-row" title="form buttons">
             <input
                 class="mx-1 mt-1 p-2 w-auto bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
                 type="button"
@@ -78,18 +51,12 @@
             />
         </div>
     </div>
-    <div class="flex flex-row justify-center">
-        <span
-            class="mr-1 px-3 py-1 bg-pink-100 hover:bg-pink-300 border border-pink-500 rounded-full cursor-pointer"
-            v-for="(element, index) in tagList"
-            @click="tagList.splice(index, 1)"
-            :key="index"
-            >{{ element }}</span
-        >
-    </div>
+    <form-tags-list :tagsArray="formatTags" @deleteTagArray="changeTagsArray" />
 </template>
 <script>
+import FormTagsList from "@/components/FormTagsList.vue";
 export default {
+    components: { FormTagsList },
     name: "FormComponent",
     emits: ["search", "rating", "page"],
     data() {
@@ -97,19 +64,17 @@ export default {
             errors: [],
             tagList: [],
             searchTags: [],
+            formatTags: {
+                tagsArray: [],
+                postCount: [],
+            },
         };
     },
     methods: {
-        checkForm(emitValue, value = false) {
+        checkForm(emitValue) {
             switch (emitValue) {
                 case "search":
-                    this.$emit("search", this.tagList);
-                    break;
-                case "rating":
-                    this.$emit("rating", value);
-                    break;
-                case "page":
-                    this.$emit("page", value);
+                    this.$emit("search", this.formatTags);
                     break;
             }
         },
@@ -121,26 +86,28 @@ export default {
                 .then((data) => (this.searchTags = data))
                 .catch((err) => console.log(err));
         },
-        targetClean(target) {
+        targetClean(tagObj) {
             this.$refs.mainInputElement.value = "";
             this.searchTags = [];
             this.errors = [];
-            target ? this.errorControl("double", target) : (this.tagList = []);
-        },
-        errorControl(action, value) {
-            if (this.tagList.length > 1) {
-                this.errors.push("Solo se permiten 2 tags.");
-                return false;
+            tagObj = {
+                name: tagObj.name,
+                post_count: tagObj.post_count,
+            };
+            if (tagObj) {
+                if (this.formatTags.tagsArray.length > 1) {
+                    this.errors.push("Solo se permiten 2 tags.");
+                    return false;
+                }
+                this.formatTags.tagsArray.push(tagObj.name);
+                this.formatTags.postCount.push(tagObj.post_count);
+            } else {
+                this.tagList = [];
             }
-            if (action === "double") {
-                var isDouble = this.tagList.find((item) => value === item);
-                !isDouble
-                    ? this.tagList.push(value)
-                    : this.errors.push("Tag is already exists.");
-            }
         },
-        testConsole(val) {
-            console.log(val);
+        changeTagsArray(index) {
+            this.formatTags.tagsArray.splice(index, 1);
+            this.formatTags.postCount.splice(index, 1);
         },
     },
 };
