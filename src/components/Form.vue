@@ -96,7 +96,7 @@ export default {
             };
             if (tagObj) {
                 if (this.formatTags.tagsArray.length > 1) {
-                    this.errors.push("Solo se permiten 2 tags.");
+                    this.errors.push("Only 2 tags allowed.");
                     return false;
                 }
                 this.formatTags.tagsArray.push(tagObj.name);
