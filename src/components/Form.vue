@@ -35,12 +35,6 @@
         </div>
         <div class="flex flex-col sm:flex-row" title="form buttons">
             <input
-                class="mx-1 mt-1 p-2 w-auto bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
-                type="button"
-                value="Refresh"
-                @click="targetClean(false)"
-            />
-            <input
                 class="mx-1 mt-1 p-2 w-auto bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
                 type="submit"
                 value="Update"
@@ -71,6 +65,9 @@ export default {
         checkForm(emitValue) {
             switch (emitValue) {
                 case "search":
+                    if (!this.formatTags.postCount[0]) {
+                        this.formatTags.postCount.push(500);
+                    }
                     this.$emit("search", this.formatTags);
                     break;
             }
@@ -93,11 +90,13 @@ export default {
             };
             if (tagObj) {
                 if (this.formatTags.tagsArray.length > 1) {
-                    this.errors.push("Solo se permiten 2 tags.");
+                    this.errors.push("Only 2 tags allowed.");
                     return false;
                 }
                 this.formatTags.tagsArray.push(tagObj.name);
-                this.formatTags.postCount.push(tagObj.post_count);
+                tagObj.post_count
+                    ? this.formatTags.postCount.push(tagObj.post_count)
+                    : this.formatTags.postCount.push(20);
             } else {
                 this.tagList = [];
             }

@@ -5,21 +5,32 @@
             class="flex flex-row flex-wrap items-baseline justify-around w-full"
         >
             <figure
-                class="m-1 border border-pink-100"
+                class="flex-shrink table m-1 border border-pink-100"
                 v-for="post in lastPosts"
                 :key="post.id"
             >
                 <img
+                    class="block mx-auto"
                     :src="post.preview_file_url"
                     :title="`Character(s): ${post.tag_string_character}`"
                     :alt="`Character(s): ${post.tag_string_character}`"
                 />
-                <figcaption class="h-auto pl-1 pb-1 bg-pink-100 bg-opacity-50">
-                    <h3 class="font-bold text-sm text-pink-700">Copyright</h3>
-                    <p class="text-xs">{{ post.tag_string_copyright }}</p>
+                <figcaption
+                    class="table-caption h-auto pl-1 pb-1 bg-pink-100 bg-opacity-50"
+                >
+                    <h3 class="break-all font-bold text-sm text-pink-700">
+                        Copyright
+                    </h3>
+                    <p class="break-all text-xs">
+                        {{ post.tag_string_copyright }}
+                    </p>
 
-                    <h3 class="font-bold text-sm text-blue-700">Artist</h3>
-                    <p class="text-xs">{{ post.tag_string_artist }}</p>
+                    <h3 class="break-all font-bold text-sm text-blue-700">
+                        Artist
+                    </h3>
+                    <p class="break-all text-xs">
+                        {{ post.tag_string_artist }}
+                    </p>
                 </figcaption>
             </figure>
         </nav>
