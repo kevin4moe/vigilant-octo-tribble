@@ -124,9 +124,7 @@ export default {
             this.postId = Number(id);
         },
         scrollMeTo(refName) {
-            console.log("ref", refName);
             var element = this.$refs[refName];
-            console.log("element", element);
             var top = element.offsetTop;
 
             window.scrollTo(0, top);

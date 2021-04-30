@@ -68,6 +68,9 @@ export default {
         checkForm(emitValue) {
             switch (emitValue) {
                 case "search":
+                    if (!this.formatTags.postCount[0]) {
+                        this.formatTags.postCount.push(500);
+                    }
                     this.$emit("search", this.formatTags);
                     break;
             }
@@ -94,7 +97,9 @@ export default {
                     return false;
                 }
                 this.formatTags.tagsArray.push(tagObj.name);
-                this.formatTags.postCount.push(tagObj.post_count);
+                tagObj.post_count
+                    ? this.formatTags.postCount.push(tagObj.post_count)
+                    : this.formatTags.postCount.push(20);
             } else {
                 this.tagList = [];
             }
