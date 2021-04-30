@@ -38,12 +38,6 @@
         </div>
         <div class="flex flex-col sm:flex-row" title="form buttons">
             <input
-                class="mx-1 mt-1 p-2 w-auto bg-white hover:bg-pink-500 active:bg-pink-800 border border-pink-500 rounded-full font-semibold text-pink-500 hover:text-white"
-                type="button"
-                value="Refresh"
-                @click="targetClean(false)"
-            />
-            <input
                 class="mx-1 mt-1 p-2 w-auto bg-pink-500 active:bg-white border border-pink-500 rounded-full font-semibold text-white"
                 type="submit"
                 value="Update"
