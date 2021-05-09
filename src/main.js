@@ -4,6 +4,7 @@ import "./index.css";
 
 import PageHome from "@/pages/Home";
 import { createRouter, createWebHistory } from "vue-router";
+import "./registerServiceWorker";
 
 const routes = [
     {
