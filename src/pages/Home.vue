@@ -4,7 +4,7 @@
     </h3>
     <form-vue @search="searchPostByTags" />
     <article ref="imageBoard" v-if="!!searchData">
-        <sub-title title="name" />
+        <main-title :many="config.count" :rating="rating" :page="config.page" />
         <num-list-grid
             :allPagesArray="pageInitials.pageUntil"
             v-model:viewPagesArray="pageInitials.pagesArray"
@@ -35,7 +35,7 @@
 
 <script>
 import FormVue from "@/components/Form.vue";
-import SubTitle from "@/components/SubTitle.vue";
+import MainTitle from "@/components/MainTitle.vue";
 import NumListGrid from "@/components/NumListGrid.vue";
 import ImageBoard from "@/components/ImageBoard.vue";
 import ImageBoardGrid from "@/components/ImageBoardGrid.vue";
@@ -45,7 +45,7 @@ export default {
     props: ["rating"],
     components: {
         FormVue,
-        SubTitle,
+        MainTitle,
         NumListGrid,
         ImageBoard,
         ImageBoardGrid,
@@ -68,6 +68,7 @@ export default {
             },
             config: {
                 page: 1,
+                count: null,
                 url: "https://danbooru.donmai.us",
                 tags: "",
             },
@@ -80,6 +81,7 @@ export default {
             )
                 .then((response) => response.json())
                 .then((data) => (this[section] = data))
+                .then(() => this.howManyPost(tags))
                 .then(() => (this.postsFetch.isload = false))
                 .catch((err) => console.log(err));
             this.postsFetch.promise = promise;
@@ -128,6 +130,14 @@ export default {
             var top = element.offsetTop;
 
             window.scrollTo(0, top);
+        },
+        howManyPost(tags) {
+            fetch(
+                `${this.config.url}/counts/posts.json?tags=rating:${this.rating}%20${tags}`
+            )
+                .then((response) => response.json())
+                .then((data) => (this.config.count = data.counts.posts))
+                .catch((err) => console.log(err));
         },
     },
 };
