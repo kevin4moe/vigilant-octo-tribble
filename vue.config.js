@@ -18,6 +18,7 @@ module.exports = {
             maskIcon: null,
             msTileImage: null,
         },
+        lang: "en",
         start_url: "/",
         scope: "/",
         theme_color: "#ec4899",
